@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Pixiv Arrow-Key Pagination
 // @namespace    https://www.pixiv.net/
-// @version      1.0
-// @description  Use Left/Right arrow keys to navigate Pixiv search result pages.
+// @version      1.1
+// @description  Use Left/Right arrow keys to navigate Pixiv paginated pages.
 // @match        https://www.pixiv.net/search*
 // @match        https://www.pixiv.net/*/tags/*
+// @match        https://www.pixiv.net/users/*/illustrations*
+// @match        https://www.pixiv.net/users/*/manga*
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/adc888/pixiv-arrow-pagination/main/pixiv-arrow-pagination.user.js
-// @downloadURL  https://raw.githubusercontent.com/adc888/pixiv-arrow-pagination/main/pixiv-arrow-pagination.user.js
 // ==/UserScript==
 
 (function () {
@@ -36,17 +36,29 @@
             return;
         }
 
-        // Make sure we're on a Pixiv search/tag page.
         const url = new URL(window.location.href);
+        const path = url.pathname;
 
-        const isSearchPage = url.pathname.startsWith('/search');
-        const isTagPage = url.pathname.includes('/tags/');
+        // Supported Pixiv pages:
+        //   /search
+        //   /tags/...
+        //   /users/<id>/illustrations
+        //   /users/<id>/manga
+        const isSearchPage = path.startsWith('/search');
+        const isTagPage = path.includes('/tags/');
+        const isArtistIllustrations = /^\/users\/\d+\/illustrations\/?$/.test(path);
+        const isArtistManga = /^\/users\/\d+\/manga\/?$/.test(path);
 
-        if (!isSearchPage && !isTagPage) {
+        if (
+            !isSearchPage &&
+            !isTagPage &&
+            !isArtistIllustrations &&
+            !isArtistManga
+        ) {
             return;
         }
 
-        // Pixiv uses "p" for the search/tag page number.
+        // Pixiv uses "p" for pagination.
         let page = parseInt(url.searchParams.get('p') || '1', 10);
 
         if (event.key === 'ArrowLeft') {
@@ -65,8 +77,7 @@
 
         url.searchParams.set('p', page);
 
-        // Let Pixiv perform its normal navigation.
+        // Navigate to the new page.
         window.location.href = url.toString();
     });
 })();
-

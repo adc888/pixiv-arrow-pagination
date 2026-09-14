@@ -6,8 +6,8 @@
 // @match        https://www.pixiv.net/search*
 // @match        https://www.pixiv.net/*/tags/*
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/YOUR_USERNAME/pixiv-arrow-pagination/main/pixiv-arrow-pagination.user.js
-// @downloadURL  https://raw.githubusercontent.com/YOUR_USERNAME/pixiv-arrow-pagination/main/pixiv-arrow-pagination.user.js
+// @updateURL    https://raw.githubusercontent.com/adc888/pixiv-arrow-pagination/main/pixiv-arrow-pagination.user.js
+// @downloadURL  https://raw.githubusercontent.com/adc888/pixiv-arrow-pagination/main/pixiv-arrow-pagination.user.js
 // ==/UserScript==
 
 (function () {
